@@ -1,0 +1,33 @@
+version: '3.1'
+
+# volumes:
+#   init-db:
+#   data-db:
+
+services:
+  mongodb:
+    image: mongo
+    restart: always
+    volumes:
+      - ./init-db:/docker-entrypoint-initdb.d
+      - ./data-db:/data/db
+    ports:
+      - 27017:27017
+
+
+  web:
+    build: .
+    restart: always
+    command: python3 -u app.py
+    ports:
+      - "8001:90"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
+      MONGO_HOSTNAME: mongodb
+      MONGO_INITDB_DATABASE: student
+      PYTHONUNBUFFERED: 0
+    volumes:
+      - .:/app
+    links:
+      - mongodb
