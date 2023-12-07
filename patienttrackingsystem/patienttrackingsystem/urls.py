@@ -20,4 +20,5 @@ from hospital.views import *
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', homepage, name='homepage'),
+    path('about/',aboutpage,name='aboutpage'),
 ]
