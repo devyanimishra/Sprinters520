@@ -60,3 +60,30 @@ class Patient(models.Model):
 
 	def __str__(self):
 		return self.username
+	
+class DoctorSlot(models.Model):
+	doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE, default=get_doctor_id)
+	date = models.DateField()
+
+	slot_count = models.IntegerField(default=0)
+	#slot_time = models.JSONField("Time Slots")
+
+	def __str__(self):
+		return self.doctor.username+" has "+self.slot_count+" slots available on "+self.date
+	
+class Appointment(models.Model):
+	doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE, default=get_doctor_id)
+	patient = models.ForeignKey(Patient, on_delete=models.CASCADE, default=get_doctor_id)
+
+	appointment_date = models.DateField(default=datetime.date.today)
+	appointment_time = models.TimeField(max_length=10)
+	register_date = models.DateField(default=datetime.date.today)
+
+	symptoms = models.CharField(max_length=200)
+	status = models.BooleanField()
+	diagnosis = models.CharField(max_length=500, default='No Diagnosis')
+	prescription = models.CharField(max_length=500, default='No Prescriptions')
+
+	def __str__(self):
+		return self.patient.username+" you have appointment with "+self.doctor.username
+
