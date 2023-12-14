@@ -3,15 +3,23 @@
 {% block body %}
 {% load static %}
 
-
+<link rel="stylesheet" type="text/css" href="{% static "css/Login-Form-Dark.css" %}"/>
 <div class="login-dark">
-    <form method="post">
+    <div class="row d-flex align-items-center justify-content-center h-100">
+      <div >
+        <img src="https://biz4solutions.com/wp-content/uploads/healthcarehms-mbbanner.webp" class="img-fluid">
+      </div>
+    <form method="post" class="col-md-7 col-lg-5 col-xl-5 offset-xl-1">
     	{% csrf_token %}
-        <h2 class="sr-only">Login Form</h2>
+        <p class="sign" align="center">Sign In</p>
         <div class="illustration"><i class="icon ion-ios-locked-outline"></i></div>
-        <div class="form-group"><input class="form-control" type="email" name="email" placeholder="Email"></div>
-        <div class="form-group"><input class="form-control" type="password" name="password" placeholder="Password"></div>
+        <p>Email ID:</p>
+        <div class="form-group"><input class="form-control" type="email" name="email"></div>
+        <p>Password:</p>
+        <div class="form-group"><input class="form-control" type="password" name="password"></div>
         <div class="form-group"><button class="btn btn-primary btn-block" type="submit">Log In</button></div>
+        <a href="{% url 'createaccountpage' %}" align="center"> Not Signed up? Register Now! </a>
     </form>
+</div>
 </div>
 {% endblock %}
