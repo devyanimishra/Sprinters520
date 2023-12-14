@@ -12,6 +12,7 @@
   margin-top: 30px;
 }
 
+
 p {
   font-size: 20px;
   margin-top: 30px;
@@ -19,3 +20,70 @@ p {
   margin-right: 30px;
 }
 
+.services{
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.cardmargin{
+  margin: 10px ;
+}
+
+.contactUs{
+ padding-top: 20px;
+  padding-bottom: 20px;
+  background-color: #ff6962;
+}
+
+.img1 {
+  width: 100%;
+  height: auto;
+  position: relative;
+  width: 100%;
+}
+
+.container1 .btn1  {
+  position: absolute;
+  top: 295%;
+  left: 15%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  background-color: #000;
+  color: white;
+  font-size: 16px;
+  padding: 12px 24px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.btn1:hover {
+  background-color: #6c757d;
+}
+
+.container1 .p1{
+  position: absolute;
+  top: 270%;
+  left: 8%;
+  font-size: 40px;
+}
+.container1 .p2{
+  position: absolute;
+  top: 277%;
+  left: 8%;
+  font-size: 40px;
+  font-family: 'Oswald', sans-serif;
+}
+
+.light{
+  font-weight: 300;
+}
+
+.padding{
+  padding: 2.5px;
+}
+
+.padding:hover{
+  color: #6c757d;
+}
