@@ -2,28 +2,33 @@
 <html>
 
 <head>
-    {% include 'include.html' %}
+    {% include 'common.html' %}
     {% load static %}
 </head>
-
+<link rel="stylesheet" type="text/css" href="{% static "css/doctor.css" %}"/>
 <body>
-    {% include 'adminnav.html' %}
-    <div id="wrapper">
-        <div class="page-content-wrapper">
-            <div>
-                    <h1 class="text-center">You are sucessfully logged in..{{ user.first_name }}</h1>
-                    <a href="{% url 'viewappointments' %}">View Appointments</a>
-                    <a href="{% url 'makeappointments' %}">Make an appointment</a>
-            </div>
+{% include 'adminnav.html' %}
+<div id="wrapper">
+    <h1 class="text-center titel">Hello, {{ user.first_name }} !</h1>
+    <div class="card">
+        <img src="https://www.shutterstock.com/image-vector/man-makes-appointment-online-doctor-600nw-1284005350.jpg" style="width:100%">
+        <div class="container" align="center" >
+            <a href="{% url 'viewappointments' %}">
+                <button class="btn-appt"> View Appointments
+                </button>
+            </a>
+            <a href="{% url 'makeappointments' %}">
+                <button class="btn-appt"> Make an appointment
+                </button>
+            </a>
         </div>
     </div>
+</div>
+
 {% include 'redirecthome.html' %}
 <script src="{% static 'js/jquery.min.js' %}"></script>
 <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
-<script src="{% static 'js/back-to-top-scroll.js' %}"></script>
-<script src="{% static 'js/Bold-BS4-Animated-Back-To-Top.js' %}"></script>
-<script src="{% static 'js/bs-init.js' %}"></script>
-<script src="{% static 'js/Sidebar-Menu.js' %}"></script>
+
 </body>
 
 </html>
