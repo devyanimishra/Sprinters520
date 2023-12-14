@@ -4,9 +4,12 @@ from hospital.views import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', home, name='home'),
-    path('about/',about,name='about'),
-    path('login/',loginpage,name='login'),
-    path('createaccount',create_account,name='create_account'),
-    path('admin_login/',admin_login,name='admin_login'), 
+    path('',homepage,name='homepage'),
+    
+    path('login/',UserView.loginUser,name='loginpage'),
+    path('logout/',UserView.logoutUser,name='logout'),
+    
+    path('home/',UserView.home,name='home'),
+    path('profile/',UserView.profile,name='profile'),
+    
 ]

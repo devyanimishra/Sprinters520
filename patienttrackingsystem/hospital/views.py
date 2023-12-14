@@ -1,88 +1,104 @@
-from .models import *
-from django.shortcuts import render
-from django.contrib.auth import authenticate,logout,login
+from django.shortcuts import render,redirect
 from django.contrib.auth.models import User,Group
+from .models import *
+from django.contrib.auth import authenticate,logout,login
 from django.utils import timezone
-# Create your views here.
-def home(request):
-	return render(request, 'index.html')
+import logging
 
-def about(request):
+
+logger = logging.getLogger('patient_portal.views')
+
+# Create your views here.
+
+def homepage(request):
+	return render(request,'index.html')
+
+def aboutpage(request):
 	return render(request,'about.html')
 
-def admin_login(request):
-	error = ""
-	if request.method == 'POST':
-		u = request.POST['username']
-		p = request.POST['password']
-		user = authenticate(username=u,password=p)
-		try:
-			if user.is_staff:
-				login(request,user)
-				error = "no"
-			else:
-				error = "yes"
-		except:
-			error = "yes"
-	d = {'error' : error}
-	return render(request,'adminlogin.html',d)
+class UserView:
+    
+    def loginUser(request):
+        
+        error = ""
+        page = ""
+        if request.method == 'POST':
+            email = request.POST['email']
+            pwd = request.POST['password']
+            user = authenticate(request,username=email,password=pwd)
+            #print("AUTHENTICATING", email,pwd)
+            try:
+                if user is not None:
+                    login(request,user)
+                    error = "no"
+                    group = request.user.groups.all()[0].name
+            
+                    if group == 'Doctor':
+                        page = "doctor"
+                        return render(request,'doctorhome.html',{'error': error,'page':page})
+                    elif group == 'Patient':
+                        page = "patient"
+                        return render(request,'patienthome.html',{'error': error,'page':page})
+                else:
+                    logger.error('User is not there')
+                    error = "Invalid Email or Password"
+            except Exception as e:
+                error = str(e)
+                logger.error("Error when logging as User", str(e))
+    
+        return render(request,'login.html', {'error': error})
+    
+    def profile(request):
+        
+        if not request.user.is_active:
+            return redirect('loginpage')
+        
+        group = request.user.groups.all()[0].name
+        
+        if group == 'Patient':
+            patient_details = Patient.objects.all().filter(email=request.user)
+            return render(request,'pateintprofile.html',{ 'patient_details' : patient_details })
+        elif group == 'Doctor':
+            doctor_details = Doctor.objects.all().filter(email=request.user)
+            return render(request,'doctorprofile.html',{ 'doctor_details' : doctor_details })
+        
+    def getAppointment(request):
+        
+        if not request.user.is_active:
+            return redirect('loginpage')
+        
+        group = request.user.groups.all()[0].name
+        
+        if group == 'Patient':
+            upcomming_appointments = Appointment.objects.filter(patient__email=request.user,appointment_date__gte=timezone.now(),status=True).order_by('appointment_date')
+            previous_appointments = Appointment.objects.filter(patient__email=request.user,appointment_date__lt=timezone.now()).order_by('-appointment_date') | Appointment.objects.filter(patient__email=request.user,status=False).order_by('-appointment_date')
+            appointments = { "upcomming_appointments" : upcomming_appointments, "previous_appointments" : previous_appointments }
+            return render(request,'patientviewappointments.html',appointments)
+        
+        elif group == 'Doctor':
+            if request.method == 'POST':
+                prescriptiondata = request.POST['prescription'] #TODO: update in the UI
+                idvalue = request.POST['idofappointment']
+                Appointment.objects.filter(id=idvalue).update(prescription=prescriptiondata,status=False)
+            upcomming_appointments = Appointment.objects.filter(doctor__email=request.user,appointment_date__gte=timezone.now(),status=True).order_by('appointment_date')
+            previous_appointments = Appointment.objects.filter(doctor__email=request.user,appointment_date__lt=timezone.now()).order_by('-appointment_date') | Appointment.objects.filter(doctor__email=request.user,status=False).order_by('-appointment_date')
+            appointments = { "upcomming_appointments" : upcomming_appointments, "previous_appointments" : previous_appointments }
+            return render(request,'doctorviewappointment.html',appointments)
 
-def loginpage(request):
-	error = ""
-	page = ""
-	if request.method == 'POST':
-		u = request.POST['email']
-		p = request.POST['password']
-		user = authenticate(request,username=u,password=p)
-		try:
-			if user is not None:
-				login(request,user)
-				error = "no"
-				g = request.user.groups.all()[0].name
-				if g == 'Doctor':
-					page = "doctor"
-					d = {'error': error,'page':page}
-					return render(request,'doctorhome.html',d)
-				elif g == 'Patient':
-					page = "patient"
-					d = {'error': error,'page':page}
-					return render(request,'patienthome.html',d)
-			else:
-				error = "yes"
-		except Exception as e:
-			error = "yes"
-	
-	return render(request,'login.html')
-
-def create_account(request):
-	err = ""
-	#fetch details from template
-	if request.method == 'POST':
-		name = request.POST['name']
-		pwd = request.POST['password']
-		recheck_pwd = request.POST['repeatpassword']
-		phone = request.POST['phonenumber']
-		mail = request.POST['email']
-		dob = request.POST['dateofbirth']
-		gender = request.POST['gender']
-		address = request.POST['address']
-		blood_group = request.POST['bloodgroup']
-		medical_history = ""
-		new_user = ""
-
-		try:
-			#create new account
-			if pwd == recheck_pwd:
-				Patient.objects.create(username=name,password= pwd,contact_number= phone, email=mail,dob = dob, gender = gender, address = address, blood_group = blood_group, medical_history= medical_history)
-				new_user = User.objects.create_user(first_name=name,email=mail,password=pwd,username=mail)
-				Group.objects.get(name='Patient').user_set.add(new_user)
-
-				new_user.save()
-				err = "False"
-			else:
-				err = "True"
-		except Exception as e:
-			err = "True"
-	
-	return render(request,'createaccount.html',{'error':err})
-
+    def logoutUser(request):
+        
+        if not request.user.is_active:
+            return redirect('loginpage')
+        logout(request)
+        return redirect('loginpage')
+    
+    def home(request):
+        
+        if not request.user.is_active:
+            return redirect('loginpage')
+        
+        group = request.user.groups.all()[0].name
+        if group == 'Doctor':
+            return render(request,'doctorhome.html')
+        elif group == 'Patient':
+            return render(request,'patienthome.html')
