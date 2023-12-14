@@ -100,17 +100,17 @@
     </div>
 </div>
 <div class="scroll-top-wrapper"><span class="scroll-top-inner"><i class="fa fa-arrow-circle-up"></i></span></div>
-{% ifequal error "no" %}
+{% ifequal error "True" %}
 <script type="text/javascript">
-    alert('Patient saved Sucessfully..........')
-    window.location = ('{% url 'loginpage' %}')
+    alert('Your account has been successfully created!')
+    window.location = ('{% url 'login' %}')
 </script>
 {% endifequal%}
 
-{% ifequal error "yes" %}
+{% ifequal error "False" %}
 <script type="text/javascript">
     /*alert('{{e}}')*/
-    alert('Email already exists....')
+    alert("Email already exists or passwords don't match")
 </script>
 {% endifequal%}
 {% endblock %}

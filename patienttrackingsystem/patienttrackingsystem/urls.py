@@ -4,9 +4,9 @@ from hospital.views import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', homepage, name='homepage'),
-    path('about/',aboutpage,name='aboutpage'),
-    path('login/',loginpage,name='loginpage'),
-    path('createaccount',createaccountpage,name='createaccountpage'),
-    path('admin_login/',Login_admin,name='login_admin'), 
+    path('', home, name='home'),
+    path('about/',about,name='about'),
+    path('login/',loginpage,name='login'),
+    path('createaccount',create_account,name='create_account'),
+    path('admin_login/',admin_login,name='admin_login'), 
 ]
