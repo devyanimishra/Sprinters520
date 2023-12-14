@@ -126,8 +126,7 @@ class PatientView(UserView):
                 if not validation["error"]:
                     Patient.objects.create(username=user_details['username'],password=user_details['pwd'],\
 											contact_number=user_details['contact_number'],email=user_details['email'],dob=user_details['dob'],\
-											gender=user_details['gender'],address=user_details['address'],blood_group=user_details['blood_group'],\
-											)#medical_history= user_details['medical_history'])
+											gender=user_details['gender'],address=user_details['address'],blood_group=user_details['blood_group'])
                     patient = User.objects.create_user(first_name=user_details['username'],email=user_details['email'],\
 														password=user_details['pwd'],username=user_details['email'])
                     Group.objects.get_or_create(name='Patient')[0].user_set.add(patient)
@@ -144,12 +143,13 @@ class PatientView(UserView):
         return render(request,'createaccount.html',{'error':flag})
     
     def addAppointment(request):
-        error = ""
+        
         if not request.user.is_active:
             return redirect('loginpage')
         alldoctors = Doctor.objects.all()
         doctor = { 'alldoctors' : alldoctors }
         group = request.user.groups.all()[0].name
+        err = ""
         if group == 'Patient':
             if request.method == 'POST':
                 doctor_email = request.POST['doctoremail']
@@ -162,10 +162,14 @@ class PatientView(UserView):
                     doctor = Doctor.objects.filter(email=doctor_email)[0]
                     patient = Patient.objects.filter(email=patient_email)[0]
                     Appointment.objects.create(doctor=doctor,patient=patient,appointment_date=appointment_date,appointment_time=appointment_time,symptoms=symptoms,status=True,prescription="")
-                    error = "no"
+                    err = "False"
                 except Exception as e:
                     logger.error("Error occurred when registering appointment ", str(e))
-                    e = {"error":error}
+                    err = "True"
+                
+                return render(request,'pateintmakeappointments.html',{'error':err})
+            elif request.method == 'GET':
+                return render(request,'pateintmakeappointments.html',doctor)
 
     def deleteAppointment(request,pid):
      
@@ -175,9 +179,141 @@ class PatientView(UserView):
         try:
             appointment = Appointment.objects.get(id=pid)
             appointment.delete()
-			#todo: delete from slot 
         except Exception as e:
             logger.error("Error when deleting appointment ", str(e))
    
         return redirect('viewappointments')
+
+class AdminView:
+    
+    def loginAdmin(request):
+        
+        error = ""
+        if request.method == 'POST':
+            username = request.POST['username']
+            pwd = request.POST['password']
+            print(username, pwd)
+            user = authenticate(username=username,password=pwd)
+            
+            try:
+                if user.is_staff:
+                    login(request,user)
+                    error="no"
+                else:
+                    error = "yes"
+                    error = "Unable to authenticate"
+            except Exception as e:
+                #error = str(e)
+                error = "yes"
+                logger.info("Error when logging in as admin ", str(e))
+            
+        return render(request,'adminlogin.html',{'error': error})
+    
+    def registerDoctor(request):
+        '''
+        Admin can register a doctor
+        '''
+        user_details = {}
+        validation = {"error": ''}
+        if not request.user.is_staff:
+            return redirect('login_admin')
+        
+        if request.method == 'POST':
+            user_details['username'] = request.POST['name']
+            user_details['pwd'] = request.POST['password']
+            user_details['recheck_pwd'] =  request.POST['repeatpasssword']
+            user_details['email'] = request.POST['email']
+            user_details['gender'] = request.POST['gender']
+            user_details['contact_number'] = request.POST['phonenumber']
+            user_details['address'] = request.POST['address']
+            user_details['dob'] = request.POST['dateofbirth']
+            user_details['blood_group'] = request.POST['bloodgroup']
+            user_details['expertise'] = request.POST['specialization']
+            doctor = None
+            validation = user_validation(user_details=user_details)
+            
+            try:
+                if not validation['error']:
+                    Doctor.objects.create(username=user_details['username'],email=user_details['email'],password=user_details['pwd'],\
+         									gender=user_details['gender'],contact_number=user_details['contact_number'],address=user_details['address'],\
+                      						dob=user_details['dob'],blood_group=user_details['blood_group'],expertise=user_details['expertise'])
+                    doctor = User.objects.create_user(first_name=user_details['username'],email=user_details['email'],\
+         											password=user_details['pwd'],username=user_details['email'])
+                    Group.objects.get_or_create(name='Doctor')[0].user_set.add(doctor)
+                    doctor.save()
+                    logger.info("Doctor is registered")
+                    validation['error'] = 'no'
+                else:
+                    validation['error'] = 'yes'
+            except Exception as e:
+                #validation["error"].append(str(e))
+                validation["error"] = "yes"
+                logger.error("Error when registering doctor ", str(e))      
+        return render(request,'adminadddoctor.html',validation)  #todo: change alert in the frontend 
+    
+    def getDoctor(request):
+        '''
+        Admin can view all doctors
+        '''
+        if not request.user.is_staff:
+            return redirect('login_admin')
+        doctor = None
+        
+        try:
+            doctor = Doctor.objects.all()
+        except Exception as e:
+            logger.error("Error when getting doctor ", str(e))
+            
+        return render(request,'adminviewDoctors.html',{ 'doc' : doctor })
+    
+    def deleteDoctor(request,pid,email):
+        '''
+        Admin can delete doctor
+        '''
+        if not request.user.is_staff:
+            return redirect('login_admin')
+        
+        try:
+            doctor = Doctor.objects.get(id=pid)
+            doctor.delete()
+            
+            users = User.objects.filter(username=email)
+            users.delete()
+																																																																																																											
+            logger.info("Delete doctor")
+        except Exception as e:
+            logger.error("Error when deleting doctor ", str(e))
+            
+        return redirect('adminviewDoctor')
+    
+    def getAppointment(request):
+        '''
+        Admin can view all appointments of all doctors and patients
+        '''
+        if not request.user.is_staff:
+            return redirect('login_admin')
+        try:
+            upcomming_appointments = Appointment.objects.filter(appointment_date__gte=timezone.now(),status=True).order_by('appointment_date')
+            previous_appointments = Appointment.objects.filter(appointment_date__lt=timezone.now()).order_by('-appointment_date') | Appointment.objects.filter(status=False).order_by('-appointment_date')
+            appointments = { "upcomming_appointments" : upcomming_appointments, "previous_appointments" : previous_appointments }
+        except Exception as e:
+            logger.error("Error when getting the appointments ", str(e))
+        
+        return render(request,'adminviewappointments.html',appointments)
+    
+    def logoutAdmin(request):
+        
+        if not request.user.is_staff:
+            return redirect('login_admin')
+        logout(request)
+        return redirect('login_admin')
+    
+    def home(request):
+        '''
+        Admin home after login
+        '''
+        
+        if not request.user.is_staff:
+            return redirect('login_admin')
+        return render(request,'adminhome.html')
 
