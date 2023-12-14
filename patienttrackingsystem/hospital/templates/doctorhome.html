@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    {% include 'include.html' %}
+    {% load static %}
+</head>
+<link rel="stylesheet" type="text/css" href="{% static "css/doctor.css" %}"/>
+<body>
+{% include 'adminnav.html' %}
+<H2 align="center" class="titel">Hello, {{ user.first_name }} !</H2>
+<div class="card">
+    <h3 align="center" class="titel">View Your Appointments</h3>
+    <img src="https://www.shutterstock.com/image-vector/man-makes-appointment-online-doctor-600nw-1284005350.jpg" alt="Avatar" style="width:100%">
+    <div class="container" align="center" >
+        <a href="{% url 'viewappointments' %}">
+        <button class="btn-appt"> View Appointments
+        </button>
+        </a>
+    </div>
+</div>
+<div class="scroll-top-wrapper"><span class="scroll-top-inner"><i class="fa fa-arrow-circle-up"></i></span></div>
+<script src="{% static 'js/jquery.min.js' %}"></script>
+<script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'js/back-to-top-scroll.js' %}"></script>
+<script src="{% static 'js/Bold-BS4-Animated-Back-To-Top.js' %}"></script>
+<script src="{% static 'js/bs-init.js' %}"></script>
+<script src="{% static 'js/Sidebar-Menu.js' %}"></script>
+</body>
+
+</html>

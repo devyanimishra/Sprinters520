@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {% include 'include.html' %}
+    {% load static %}
+</head>
+<body style="background-image: url(&quot;{% static 'img/star-sky.jpg' %}&quot;);">
+    {% include 'adminnav1.html' %}
+    <div id="wrapper">
+            <h1 class="text-center" style="color: white;">You are sucessfully logged in..{{ user.username }}</h1>
+                <a href="{% url 'adminaddDoctor' %}">Add Doctor</a>
+                <a href="{% url 'adminviewDoctor' %}">View Doctors</a>
+                <a href="{% url 'adminviewAppointment' %}">View Appointments</a>
+            </div>
+</body>
+</html>
