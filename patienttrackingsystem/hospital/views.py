@@ -54,6 +54,9 @@ class UserView:
         return render(request,'login.html', {'error': error})
     
     def profile(request):
+        '''
+        Patient and Doctor can view their repective profiles
+        '''
         
         if not request.user.is_active:
             return redirect('loginpage')
@@ -68,6 +71,9 @@ class UserView:
             return render(request,'doctorprofile.html',{ 'doctor_details' : doctor_details })
         
     def getAppointment(request):
+        '''
+        Patient and Doctor can their repective appointment schedules
+        '''
         
         if not request.user.is_active:
             return redirect('loginpage')
@@ -109,7 +115,11 @@ class UserView:
             return render(request,'patienthome.html')
         
 class PatientView(UserView):
+    
     def registerPatient(request):
+        '''
+        Patient can register on the portal
+        '''
         user_details = {}
         validation = {"error": ''}
         if request.method == 'POST':
@@ -144,6 +154,9 @@ class PatientView(UserView):
         return render(request,'createaccount.html', {'error': validation["error"]})
     
     def addAppointment(request):
+        '''
+        Patient can book an appointment
+        '''
         
         if not request.user.is_active:
             return redirect('loginpage')
@@ -172,6 +185,9 @@ class PatientView(UserView):
                 return render(request,'pateintmakeappointments.html',doctor)
 
     def deleteAppointment(request,pid):
+        '''
+        Patient can delete the appointment scheduled
+        '''
      
         if not request.user.is_active:
             return redirect('loginpage')
@@ -208,6 +224,9 @@ class AdminView:
         return render(request,'adminlogin.html',{'error': error})
     
     def registerDoctor(request):
+        '''
+        Admin can register doctors
+        '''
         
         user_details = {}
         validation = {"error": ''}
@@ -245,6 +264,9 @@ class AdminView:
         return render(request,'adminadddoctor.html',validation)
     
     def getDoctor(request):
+        '''
+        Admin can view, search doctors
+        '''
         
         if not request.user.is_staff:
             return redirect('login_admin')
@@ -258,6 +280,9 @@ class AdminView:
         return render(request,'adminviewDoctors.html',{ 'doc' : doctor })
     
     def deleteDoctor(request,pid,email):
+        '''
+        Admin can delete doctor
+        '''
         
         if not request.user.is_staff:
             return redirect('login_admin')
@@ -276,6 +301,9 @@ class AdminView:
         return redirect('adminviewDoctor')
     
     def getAppointment(request):
+        '''
+        Admin can view all the appointment schedules
+        '''
         
         if not request.user.is_staff:
             return redirect('login_admin')

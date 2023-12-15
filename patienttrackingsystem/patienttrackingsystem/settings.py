@@ -125,6 +125,10 @@ LOGGING = {
     },
 }
 
+SESSION_COOKIE_SECURE = True 
+SESSION_COOKIE_HTTPONLY = True
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
 
