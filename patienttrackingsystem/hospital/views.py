@@ -5,10 +5,11 @@ from django.contrib.auth import authenticate,logout,login
 from django.utils import timezone
 import logging
 
+from .helper.validation import user_validation
 
 logger = logging.getLogger('patient_portal.views')
 
-
+# Create your views here.
 
 def homepage(request):
 	return render(request,'index.html')
@@ -26,13 +27,12 @@ class UserView:
             email = request.POST['email']
             pwd = request.POST['password']
             user = authenticate(request,username=email,password=pwd)
-            #print("AUTHENTICATING", email,pwd)
+
             try:
                 if user is not None:
                     login(request,user)
-                    error = "no"
                     group = request.user.groups.all()[0].name
-            
+                    error = "False"
                     if group == 'Doctor':
                         page = "doctor"
                         return render(request,'doctorhome.html',{'error': error,'page':page})
@@ -41,11 +41,10 @@ class UserView:
                         return render(request,'patienthome.html',{'error': error,'page':page})
                 else:
                     logger.error('User is not there')
-                    error = "Invalid Email or Password"
+                    error = "True"
             except Exception as e:
-                error = str(e)
+                error = "True"
                 logger.error("Error when logging as User", str(e))
-    
         return render(request,'login.html', {'error': error})
     
     def profile(request):
@@ -63,6 +62,9 @@ class UserView:
             return render(request,'doctorprofile.html',{ 'doctor_details' : doctor_details })
         
     def getAppointment(request):
+        '''
+        Patient and Doctor can view their respective appoint schedules
+        '''
         
         if not request.user.is_active:
             return redirect('loginpage')
@@ -77,7 +79,7 @@ class UserView:
         
         elif group == 'Doctor':
             if request.method == 'POST':
-                prescriptiondata = request.POST['prescription'] #TODO: update in the UI
+                prescriptiondata = request.POST['prescription']
                 idvalue = request.POST['idofappointment']
                 Appointment.objects.filter(id=idvalue).update(prescription=prescriptiondata,status=False)
             upcomming_appointments = Appointment.objects.filter(doctor__email=request.user,appointment_date__gte=timezone.now(),status=True).order_by('appointment_date')
@@ -105,8 +107,10 @@ class UserView:
         
 class PatientView(UserView):
     def registerPatient(request):
+        '''
+        Patient can register themselves
+        '''
         user_details = {}
-        flag = ''
         validation = {"error": ''}
         if request.method == 'POST':
             user_details['username'] = request.POST['name']
@@ -118,7 +122,6 @@ class PatientView(UserView):
             user_details['gender'] = request.POST['gender']
             user_details['address'] = request.POST['address']
             user_details['blood_group'] = request.POST['bloodgroup']
-			#user_details['medical_history'] = request.POST['medical_history'] #todo :update field names in the UI 
             patient = ""
             validation = user_validation(user_details=user_details)
             try:
@@ -131,19 +134,19 @@ class PatientView(UserView):
 														password=user_details['pwd'],username=user_details['email'])
                     Group.objects.get_or_create(name='Patient')[0].user_set.add(patient)
                     patient.save()
+                    validation["error"] = "False"
                     logger.info("Patient is registered")
-                    flag = "False"
-                    
                 else:
-                    flag = "True"
+                    validation["error"] = "False"
             except Exception as e:
-                validation["error"].append(str(e))
-                flag = "True"
+                validation["error"] = "True"
                 logger.error("Error when registering patient ", e)
-        return render(request,'createaccount.html',{'error':flag})
+        return render(request,'createaccount.html', {'error': validation["error"]})
     
     def addAppointment(request):
-        
+        '''
+        Patient can book appointment
+        '''
         if not request.user.is_active:
             return redirect('loginpage')
         alldoctors = Doctor.objects.all()
@@ -157,7 +160,6 @@ class PatientView(UserView):
                 appointment_date = request.POST['appointmentdate']
                 appointment_time = request.POST['appointmenttime']
                 symptoms = request.POST['symptoms']
-                print(doctor_email, doctor_email)
                 try:
                     doctor = Doctor.objects.filter(email=doctor_email)[0]
                     patient = Patient.objects.filter(email=patient_email)[0]
@@ -172,6 +174,9 @@ class PatientView(UserView):
                 return render(request,'pateintmakeappointments.html',doctor)
 
     def deleteAppointment(request,pid):
+        '''
+        Patient can delete appointment
+        '''
      
         if not request.user.is_active:
             return redirect('loginpage')
@@ -183,6 +188,7 @@ class PatientView(UserView):
             logger.error("Error when deleting appointment ", str(e))
    
         return redirect('viewappointments')
+
 
 class AdminView:
     
@@ -198,21 +204,19 @@ class AdminView:
             try:
                 if user.is_staff:
                     login(request,user)
-                    error="no"
+                    error = "False"
                 else:
-                    error = "yes"
-                    error = "Unable to authenticate"
+                    error = "True"
             except Exception as e:
-                #error = str(e)
-                error = "yes"
+                error = "True"
                 logger.info("Error when logging in as admin ", str(e))
-            
         return render(request,'adminlogin.html',{'error': error})
     
     def registerDoctor(request):
         '''
         Admin can register a doctor
         '''
+        
         user_details = {}
         validation = {"error": ''}
         if not request.user.is_staff:
@@ -241,20 +245,20 @@ class AdminView:
          											password=user_details['pwd'],username=user_details['email'])
                     Group.objects.get_or_create(name='Doctor')[0].user_set.add(doctor)
                     doctor.save()
+                    validation["error"] = "False"
                     logger.info("Doctor is registered")
-                    validation['error'] = 'no'
                 else:
-                    validation['error'] = 'yes'
+                    validation["error"] = "True"
             except Exception as e:
-                #validation["error"].append(str(e))
-                validation["error"] = "yes"
+                validation["error"] = "True"
                 logger.error("Error when registering doctor ", str(e))      
-        return render(request,'adminadddoctor.html',validation)  #todo: change alert in the frontend 
+        return render(request,'adminadddoctor.html',validation)
     
     def getDoctor(request):
         '''
         Admin can view all doctors
         '''
+        
         if not request.user.is_staff:
             return redirect('login_admin')
         doctor = None
@@ -270,6 +274,7 @@ class AdminView:
         '''
         Admin can delete doctor
         '''
+        
         if not request.user.is_staff:
             return redirect('login_admin')
         
