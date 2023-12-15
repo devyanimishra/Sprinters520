@@ -5,7 +5,14 @@ The Patient Tracking System is a platform to allow the complete  management of t
 The application can be setup using the following steps:
 1. pip install -r requirements.txt
 2. cd patienttrackingsystem
-3. python3 manage.py runserver
+3. python3 manage.py migrate
+4. python3 manage.py runserver
+5. python3 manage.py test hospital
+
+Tech Stack Used:
+1. Backend - Django
+2. Fronend - HTML, Javascript, CSS
+3. DB - Sqlite3
 
 User interface of the application:
 <img width="870" alt="image" src="https://github.com/devyanimishra/Sprinters520/assets/49989159/cce63854-9dfa-464d-ab97-93d1f95db556">
