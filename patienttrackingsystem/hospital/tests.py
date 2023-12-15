@@ -28,7 +28,7 @@ class Tests(TestCase):
     
     def test_create_account_page(self):
         client = Client()
-        response = client.get('/createaccount/')
+        response = client.get('/Register/')
         self.assertEqual(response.status_code, 200)
     
 
@@ -40,9 +40,9 @@ class Tests(TestCase):
     def test_patient_login_view(self):
         client = Client()
         response = client.get('/login/')
-        self.assertTemplateUsed(response, 'login.html')
+        self.assertTemplateUsed(response, 'Login.html')
 
     def test_admin_login(self):
         client = Client()
         response = client.get('/loginadmin/')
-        self.assertTemplateUsed(response, 'adminlogin.html')
+        self.assertTemplateUsed(response, 'LoginAdmin.html')

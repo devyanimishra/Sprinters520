@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    {% include 'common.html' %}
+    {% load static %}
+</head>
+<link rel="stylesheet" type="text/css" href="{% static "css/doctor.css" %}"/>
+<body>
+{% include 'PatientandDoctorNav.html' %}
+<div id="wrapper">
+    <h1 class="text-center titel">Hello, {{ user.first_name }} !</h1>
+    <div class="card">
+        <img src="https://www.shutterstock.com/image-vector/man-makes-appointment-online-doctor-600nw-1284005350.jpg" style="width:100%">
+        <div class="container" align="center" >
+            <a href="{% url 'viewappointments' %}">
+                <button class="btn-appt"> View Appointments
+                </button>
+            </a>
+            <a href="{% url 'makeappointments' %}">
+                <button class="btn-appt"> Make an appointment
+                </button>
+            </a>
+        </div>
+    </div>
+</div>
+
+<script src="{% static 'js/jquery.min.js' %}"></script>
+<script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+
+</body>
+
+</html>

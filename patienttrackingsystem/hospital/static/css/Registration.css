@@ -1,0 +1,107 @@
+.register-form {
+  height: 1000px;
+  background-size: cover;
+  position: relative;
+}
+
+
+.register-form .custom-form {
+  padding: 20px;
+  box-sizing: border-box;
+  background-color: #ff6962;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+  font: bold 14px sans-serif;
+  text-align: center;
+  color: #fff;
+  border-radius: 4px;
+  position: absolute;
+  top: 10%;
+  right: 45%;
+}
+
+
+.register-form .custom-form h1 {
+  display: inline-block;
+  color: #fff;
+  font-size: 30px;
+  font-weight: bold;
+  padding: 10px 10px 15px;
+ }
+
+.register-form .custom-form .form-group {
+  margin-bottom: 15px;
+}
+
+.register-form .custom-form .label-column {
+  text-align: right;
+  color: #fff;
+}
+
+@media (max-width:30px) {
+  .register-form .custom-form .label-column {
+    text-align: left;
+  }
+}
+
+.register-form .custom-form .input-column {
+  color: #fff;
+  text-align: left;
+}
+
+.register-form .custom-form .input-column input {
+  color: #5f5f5f;
+  box-shadow: 1px 2px 4px 0 rgba(0, 0, 0, 0.08);
+  padding: 12px;
+  border-radius: 2px;
+  height: 42px;
+}
+
+.register-form .custom-form .dropdown .dropdown-toggle {
+  background: #fff;
+  box-shadow: 1px 2px 4px 0 rgba(0, 0, 0, 0.08);
+  color: #fff;
+}
+
+.register-form .custom-form .dropdown ul {
+  background: #fff;
+}
+
+.register-form .custom-form .dropdown ul li a {
+  background: #fff;
+  color: #333;
+  opacity: 0.8;
+}
+
+.register-form .custom-form .dropdown ul li a:hover {
+  opacity: 1;
+}
+
+.register-form .custom-form .submit-button {
+  background: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 15px;
+  box-shadow: none;
+  margin-top: 26px;
+  text-shadow: none;
+  outline: none;
+  color: #2980ed;
+  font-weight: bold;
+  font-size: 15px;
+  text-align: center;
+  padding-right: 120px;
+  padding-left: 120px;
+}
+
+.register-form .custom-form .submit-button:hover, .submit-button:active {
+  background: #214a81;
+  outline: none;
+  color: #fff;
+}
+
+.img-fluid{
+  height:100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}

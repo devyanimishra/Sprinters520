@@ -14,9 +14,6 @@ logger = logging.getLogger('patient_portal.views')
 def homepage(request):
 	return render(request,'index.html')
 
-def aboutpage(request):
-	return render(request,'about.html')
-
 class UserView:
     
     def add_new_user(data):
@@ -41,23 +38,22 @@ class UserView:
                     error = "False"
                     if group == 'Doctor':
                         page = "doctor"
-                        return render(request,'doctorhome.html',{'error': error,'page':page})
+                        return render(request,'HomeDoctor.html',{'error': error,'page':page})
                     elif group == 'Patient':
                         page = "patient"
-                        return render(request,'patienthome.html',{'error': error,'page':page})
+                        return render(request,'HomePatient.html',{'error': error,'page':page})
                 else:
                     logger.error('User is not there')
                     error = "True"
             except Exception as e:
                 error = "True"
                 logger.error("Error when logging as User", str(e))
-        return render(request,'login.html', {'error': error})
+        return render(request,'Login.html', {'error': error})
     
     def profile(request):
-        '''
-        Patient and Doctor can view their repective profiles
-        '''
-        
+         '''
+             Patient and Doctor can view their repective profiles
+         '''
         if not request.user.is_active:
             return redirect('loginpage')
         
@@ -65,36 +61,35 @@ class UserView:
         
         if group == 'Patient':
             patient_details = Patient.objects.all().filter(email=request.user)
-            return render(request,'pateintprofile.html',{ 'patient_details' : patient_details })
+            return render(request,'ProfilePatient.html',{ 'patient_details' : patient_details })
         elif group == 'Doctor':
             doctor_details = Doctor.objects.all().filter(email=request.user)
-            return render(request,'doctorprofile.html',{ 'doctor_details' : doctor_details })
+            return render(request,'ProfileDoctor.html',{ 'doctor_details' : doctor_details })
         
     def getAppointment(request):
         '''
-        Patient and Doctor can their repective appointment schedules
-        '''
-        
+          Patient and Doctor can their repective appointment schedules
+         '''
         if not request.user.is_active:
             return redirect('loginpage')
         
         group = request.user.groups.all()[0].name
         
         if group == 'Patient':
-            upcomming_appointments = Appointment.objects.filter(patient__email=request.user,appointment_date__gte=timezone.now(),status=True).order_by('appointment_date')
+            upcoming_appointments = Appointment.objects.filter(patient__email=request.user,appointment_date__gte=timezone.now(),status=True).order_by('appointment_date')
             previous_appointments = Appointment.objects.filter(patient__email=request.user,appointment_date__lt=timezone.now()).order_by('-appointment_date') | Appointment.objects.filter(patient__email=request.user,status=False).order_by('-appointment_date')
-            appointments = { "upcomming_appointments" : upcomming_appointments, "previous_appointments" : previous_appointments }
-            return render(request,'patientviewappointments.html',appointments)
+            appointments = { "upcoming_appointments" : upcoming_appointments, "previous_appointments" : previous_appointments }
+            return render(request,'ViewAppointmentPatient.html',appointments)
         
         elif group == 'Doctor':
             if request.method == 'POST':
                 prescriptiondata = request.POST['prescription']
                 idvalue = request.POST['idofappointment']
                 Appointment.objects.filter(id=idvalue).update(prescription=prescriptiondata,status=False)
-            upcomming_appointments = Appointment.objects.filter(doctor__email=request.user,appointment_date__gte=timezone.now(),status=True).order_by('appointment_date')
+            upcoming_appointments = Appointment.objects.filter(doctor__email=request.user,appointment_date__gte=timezone.now(),status=True).order_by('appointment_date')
             previous_appointments = Appointment.objects.filter(doctor__email=request.user,appointment_date__lt=timezone.now()).order_by('-appointment_date') | Appointment.objects.filter(doctor__email=request.user,status=False).order_by('-appointment_date')
-            appointments = { "upcomming_appointments" : upcomming_appointments, "previous_appointments" : previous_appointments }
-            return render(request,'doctorviewappointment.html',appointments)
+            appointments = { "upcoming_appointments" : upcoming_appointments, "previous_appointments" : previous_appointments }
+            return render(request,'ViewAppointmentDoctor.html',appointments)
 
     def logoutUser(request):
         
@@ -110,16 +105,15 @@ class UserView:
         
         group = request.user.groups.all()[0].name
         if group == 'Doctor':
-            return render(request,'doctorhome.html')
+            return render(request,'HomeDoctor.html')
         elif group == 'Patient':
-            return render(request,'patienthome.html')
+            return render(request,'HomePatient.html')
         
 class PatientView(UserView):
-    
     def registerPatient(request):
-        '''
-        Patient can register on the portal
-        '''
+    '''
+            Patient can register on the portal
+            '''
         user_details = {}
         validation = {"error": ''}
         if request.method == 'POST':
@@ -151,13 +145,12 @@ class PatientView(UserView):
             except Exception as e:
                 validation["error"] = "True"
                 logger.error("Error when registering patient ", e)
-        return render(request,'createaccount.html', {'error': validation["error"]})
+        return render(request,'Register.html', {'error': validation["error"]})
     
     def addAppointment(request):
         '''
-        Patient can book an appointment
-        '''
-        
+                Patient can book an appointment
+                '''
         if not request.user.is_active:
             return redirect('loginpage')
         alldoctors = Doctor.objects.all()
@@ -180,15 +173,14 @@ class PatientView(UserView):
                     logger.error("Error occurred when registering appointment ", str(e))
                     err = "True"
                 
-                return render(request,'pateintmakeappointments.html',{'error':err})
+                return render(request,'MakeAppointmentPatient.html',{'error':err})
             elif request.method == 'GET':
-                return render(request,'pateintmakeappointments.html',doctor)
+                return render(request,'MakeAppointmentPatient.html',doctor)
 
     def deleteAppointment(request,pid):
-        '''
-        Patient can delete the appointment scheduled
-        '''
-     
+     '''
+             Patient can delete the appointment scheduled
+             '''
         if not request.user.is_active:
             return redirect('loginpage')
 
@@ -221,13 +213,12 @@ class AdminView:
             except Exception as e:
                 error = "True"
                 logger.info("Error when logging in as admin ", str(e))
-        return render(request,'adminlogin.html',{'error': error})
+        return render(request,'LoginAdmin.html',{'error': error})
     
     def registerDoctor(request):
         '''
-        Admin can register doctors
-        '''
-        
+                Admin can register doctors
+                '''
         user_details = {}
         validation = {"error": ''}
         if not request.user.is_staff:
@@ -261,13 +252,12 @@ class AdminView:
             except Exception as e:
                 validation["error"] = "True"
                 logger.error("Error when registering doctor ", str(e))      
-        return render(request,'adminadddoctor.html',validation)
+        return render(request,'AddDoctorAdmin.html',validation)
     
     def getDoctor(request):
         '''
-        Admin can view, search doctors
-        '''
-        
+                Admin can view, search doctors
+                '''
         if not request.user.is_staff:
             return redirect('login_admin')
         doctor = None
@@ -277,13 +267,12 @@ class AdminView:
         except Exception as e:
             logger.error("Error when getting doctor ", str(e))
             
-        return render(request,'adminviewDoctors.html',{ 'doc' : doctor })
+        return render(request,'ViewDoctorsAdmin.html',{ 'doc' : doctor })
     
     def deleteDoctor(request,pid,email):
         '''
-        Admin can delete doctor
-        '''
-        
+                Admin can delete doctor
+                '''
         if not request.user.is_staff:
             return redirect('login_admin')
         
@@ -298,23 +287,22 @@ class AdminView:
         except Exception as e:
             logger.error("Error when deleting doctor ", str(e))
             
-        return redirect('adminviewDoctor')
+        return redirect('ViewDoctorsAdmin')
     
     def getAppointment(request):
         '''
-        Admin can view all the appointment schedules
-        '''
-        
+                Admin can view all the appointment schedules
+                '''
         if not request.user.is_staff:
             return redirect('login_admin')
         try:
-            upcomming_appointments = Appointment.objects.filter(appointment_date__gte=timezone.now(),status=True).order_by('appointment_date')
+            upcoming_appointments = Appointment.objects.filter(appointment_date__gte=timezone.now(),status=True).order_by('appointment_date')
             previous_appointments = Appointment.objects.filter(appointment_date__lt=timezone.now()).order_by('-appointment_date') | Appointment.objects.filter(status=False).order_by('-appointment_date')
-            appointments = { "upcomming_appointments" : upcomming_appointments, "previous_appointments" : previous_appointments }
+            appointments = { "upcoming_appointments" : upcoming_appointments, "previous_appointments" : previous_appointments }
         except Exception as e:
             logger.error("Error when getting the appointments ", str(e))
         
-        return render(request,'adminviewappointments.html',appointments)
+        return render(request,'ViewAppointmentAdmin.html',appointments)
     
     def logoutAdmin(request):
         
@@ -327,5 +315,5 @@ class AdminView:
         
         if not request.user.is_staff:#after login user comes to this page.
             return redirect('login_admin')
-        return render(request,'adminhome.html')
+        return render(request,'HomeAdmin.html')
 

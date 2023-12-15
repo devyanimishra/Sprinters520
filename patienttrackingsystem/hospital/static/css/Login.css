@@ -1,0 +1,71 @@
+.login {
+  height: 1000px;
+  background-size: cover;
+  position: relative;
+}
+
+.login form {
+  max-width: 320px;
+  width: 90%;
+  background-color: #ff6962;
+  padding: 40px;
+  border-radius: 4px;
+  transform: translate(-50%, -50%);
+  position: absolute;
+  top: 40%;
+  right: 40%;
+  color: #fff;
+  box-shadow: 3px 3px 4px rgba(0,0,0,0.2);
+  margin-top: 40px;
+}
+
+.login .illustration {
+  text-align: center;
+  padding: 20px 0 20px;
+  font-size: 100px;
+  color: #0066CC;
+}
+
+.login form .form-control {
+  border-bottom: 1px solid #434a52;
+  border-radius: 0;
+  color: #fff;
+}
+
+.login form .btn-primary {
+  background: #fff;
+  border-radius: 4px;
+  padding: 11px;
+  margin-top: 26px;
+  color: #2980ed;
+  font-weight: bold;
+  font-size: 15px;
+}
+
+input[type="email"]::placeholder { 
+        color: white; 
+    } 
+input[type="password"]::placeholder { 
+        color: white; 
+    } 
+
+.sign{
+        color: #fff;
+        font-family: 'Ubuntu', sans-serif;
+        font-weight: bold;
+        font-size: 25px;
+    }
+
+.img-fluid{
+  height: 100%; 
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.login form .btn-primary:hover, .login form .btn-primary:active {
+  background: #214a81;
+  color: #fff;
+}
+
+
