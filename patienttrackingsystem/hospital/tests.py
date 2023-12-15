@@ -1,6 +1,6 @@
-from .views import * 
 from django.test import TestCase, Client
 from .models import *
+from .views import * 
 # Create your tests here.
 class Tests(TestCase):
 

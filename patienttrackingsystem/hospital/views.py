@@ -19,6 +19,12 @@ def aboutpage(request):
 
 class UserView:
     
+    def add_new_user(data):
+        if data:
+            Patient.objects.create(**data)
+            return True
+        return False
+    
     def loginUser(request):
         
         error = ""
@@ -62,9 +68,6 @@ class UserView:
             return render(request,'doctorprofile.html',{ 'doctor_details' : doctor_details })
         
     def getAppointment(request):
-        '''
-        Patient and Doctor can view their respective appoint schedules
-        '''
         
         if not request.user.is_active:
             return redirect('loginpage')
@@ -107,9 +110,6 @@ class UserView:
         
 class PatientView(UserView):
     def registerPatient(request):
-        '''
-        Patient can register themselves
-        '''
         user_details = {}
         validation = {"error": ''}
         if request.method == 'POST':
@@ -144,15 +144,13 @@ class PatientView(UserView):
         return render(request,'createaccount.html', {'error': validation["error"]})
     
     def addAppointment(request):
-        '''
-        Patient can book appointment
-        '''
+        
         if not request.user.is_active:
             return redirect('loginpage')
         alldoctors = Doctor.objects.all()
         doctor = { 'alldoctors' : alldoctors }
         group = request.user.groups.all()[0].name
-        err = ""
+        err = ''
         if group == 'Patient':
             if request.method == 'POST':
                 doctor_email = request.POST['doctoremail']
@@ -174,9 +172,6 @@ class PatientView(UserView):
                 return render(request,'pateintmakeappointments.html',doctor)
 
     def deleteAppointment(request,pid):
-        '''
-        Patient can delete appointment
-        '''
      
         if not request.user.is_active:
             return redirect('loginpage')
@@ -194,7 +189,7 @@ class AdminView:
     
     def loginAdmin(request):
         
-        error = ""
+        error = ''
         if request.method == 'POST':
             username = request.POST['username']
             pwd = request.POST['password']
@@ -213,9 +208,6 @@ class AdminView:
         return render(request,'adminlogin.html',{'error': error})
     
     def registerDoctor(request):
-        '''
-        Admin can register a doctor
-        '''
         
         user_details = {}
         validation = {"error": ''}
@@ -247,17 +239,12 @@ class AdminView:
                     doctor.save()
                     validation["error"] = "False"
                     logger.info("Doctor is registered")
-                else:
-                    validation["error"] = "True"
             except Exception as e:
                 validation["error"] = "True"
                 logger.error("Error when registering doctor ", str(e))      
         return render(request,'adminadddoctor.html',validation)
     
     def getDoctor(request):
-        '''
-        Admin can view all doctors
-        '''
         
         if not request.user.is_staff:
             return redirect('login_admin')
@@ -271,9 +258,6 @@ class AdminView:
         return render(request,'adminviewDoctors.html',{ 'doc' : doctor })
     
     def deleteDoctor(request,pid,email):
-        '''
-        Admin can delete doctor
-        '''
         
         if not request.user.is_staff:
             return redirect('login_admin')
@@ -292,9 +276,7 @@ class AdminView:
         return redirect('adminviewDoctor')
     
     def getAppointment(request):
-        '''
-        Admin can view all appointments of all doctors and patients
-        '''
+        
         if not request.user.is_staff:
             return redirect('login_admin')
         try:
@@ -314,11 +296,8 @@ class AdminView:
         return redirect('login_admin')
     
     def home(request):
-        '''
-        Admin home after login
-        '''
         
-        if not request.user.is_staff:
+        if not request.user.is_staff:#after login user comes to this page.
             return redirect('login_admin')
         return render(request,'adminhome.html')
 
