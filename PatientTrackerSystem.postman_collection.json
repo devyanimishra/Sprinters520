@@ -1,0 +1,683 @@
+{
+	"info": {
+		"_postman_id": "4ad9edb1-1803-4cbb-8cf7-a08cdf24d90c",
+		"name": "PatientTrackerSystem",
+		"description": "The Patient Tracking System is a platform to allow the complete management of the services regarding a patient in a healthcare scenario. It is intended to be used by medical professionals like doctors, patients and administrative members alike. Each user has a separate view of the system and different credentials to register. Its primary purpose is to allow medical staff members an efficient way to manage and track patient information including associated functions like booking appointments between patient and doctor.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "31547831"
+	},
+	"item": [
+		{
+			"name": "http://127.0.0.1:8000/Login",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/Register",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"Register"
+					]
+				},
+				"description": "Renders the login page of the portal - login.html"
+			},
+			"response": []
+		},
+		{
+			"name": "http://127.0.0.1:8000/Register",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/Register",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"Register"
+					]
+				},
+				"description": "Renders the register page for the patient and doctor"
+			},
+			"response": []
+		},
+		{
+			"name": "http://127.0.0.1:8000/Register/",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-CSRFToken",
+						"value": "ZvU3EUjkHmyu9SuLGVcXy7w3jhQnLQnLjyLdWqRioIVde7dahimnaY8FoceUHt14",
+						"type": "text"
+					},
+					{
+						"key": "csrftoken",
+						"value": "ZvU3EUjkHmyu9SuLGVcXy7w3jhQnLQnLjyLdWqRioIVde7dahimnaY8FoceUHt14",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "name",
+							"value": "Andrew",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "andrew",
+							"type": "text"
+						},
+						{
+							"key": "repeatpassword",
+							"value": "andrew",
+							"type": "text"
+						},
+						{
+							"key": "phonenumber",
+							"value": "4132436789",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "andrew@gmail.com",
+							"type": "text"
+						},
+						{
+							"key": "dateofbirth",
+							"value": "1999-08-01",
+							"type": "text"
+						},
+						{
+							"key": "gender",
+							"value": "M",
+							"type": "text"
+						},
+						{
+							"key": "address",
+							"value": "Amherst",
+							"type": "text"
+						},
+						{
+							"key": "bloodgroup",
+							"value": "O+",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/Register/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"Register",
+						""
+					]
+				},
+				"description": "Registers the patient with the form data"
+			},
+			"response": []
+		},
+		{
+			"name": "http://127.0.0.1:8000/Login/",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-CSRFToken",
+						"value": "ZvU3EUjkHmyu9SuLGVcXy7w3jhQnLQnLjyLdWqRioIVde7dahimnaY8FoceUHt14",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "email",
+							"value": "andrew@gmail.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "andrew",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/Login/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"Login",
+						""
+					]
+				},
+				"description": "Validates the credentials and logins the patient and the doctor"
+			},
+			"response": []
+		},
+		{
+			"name": "http://127.0.0.1:8000/loginadmin/",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/loginadmin/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"loginadmin",
+						""
+					]
+				},
+				"description": "Login page for the admin"
+			},
+			"response": []
+		},
+		{
+			"name": "http://127.0.0.1:8000/loginadmin/",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-CSRFToken",
+						"value": "ZvU3EUjkHmyu9SuLGVcXy7w3jhQnLQnLjyLdWqRioIVde7dahimnaY8FoceUHt14",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "admin",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/loginadmin/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"loginadmin",
+						""
+					]
+				},
+				"description": "Vlaidate credentials and login the admin"
+			},
+			"response": []
+		},
+		{
+			"name": "http://127.0.0.1:8000/AddDoctorAdmin/",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-CSRFToken",
+						"value": "ZvU3EUjkHmyu9SuLGVcXy7w3jhQnLQnLjyLdWqRioIVde7dahimnaY8FoceUHt14",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://127.0.0.1:8000/AddDoctorAdmin/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"AddDoctorAdmin",
+						""
+					]
+				},
+				"description": "Renders the form for for the admin to add doctor"
+			},
+			"response": []
+		},
+		{
+			"name": "http://127.0.0.1:8000/AddDoctorAdmin/",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-CSRFToken",
+						"value": "oBjfdwF50nblpAXHDt9ef6oTCCtnA8bj0SGmvmpCyNzNe3Ci7eIkOnlBuxIysMAU",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "name",
+							"value": "Grace",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "grace",
+							"type": "text"
+						},
+						{
+							"key": "repeatpasssword",
+							"value": "grace",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "grace@gmail.com",
+							"type": "text"
+						},
+						{
+							"key": "gender",
+							"value": "F",
+							"type": "text"
+						},
+						{
+							"key": "phonenumber",
+							"value": "7893451234",
+							"type": "text"
+						},
+						{
+							"key": "address",
+							"value": "Sunderland",
+							"type": "text"
+						},
+						{
+							"key": "dateofbirth",
+							"value": "1999-09-09",
+							"type": "text"
+						},
+						{
+							"key": "bloodgroup",
+							"value": "O+",
+							"type": "text"
+						},
+						{
+							"key": "specialization",
+							"value": "Pediatrician",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/AddDoctorAdmin/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"AddDoctorAdmin",
+						""
+					]
+				},
+				"description": "TO registe doctor by the admin"
+			},
+			"response": []
+		},
+		{
+			"name": "http://127.0.0.1:8000/adminlogout/",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-CSRFToken",
+						"value": "oBjfdwF50nblpAXHDt9ef6oTCCtnA8bj0SGmvmpCyNzNe3Ci7eIkOnlBuxIysMAU",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://127.0.0.1:8000/adminlogout/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"adminlogout",
+						""
+					]
+				},
+				"description": "Admin Logout"
+			},
+			"response": []
+		},
+		{
+			"name": "http://127.0.0.1:8000/makeappointments/",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-CSRFToken",
+						"value": "oBjfdwF50nblpAXHDt9ef6oTCCtnA8bj0SGmvmpCyNzNe3Ci7eIkOnlBuxIysMAU",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "doctoremail",
+							"value": "grace@gmail.com",
+							"type": "text"
+						},
+						{
+							"key": "patientemail",
+							"value": "andrew@gmail.com",
+							"type": "text"
+						},
+						{
+							"key": "appointmentdate",
+							"value": "2023-12-23",
+							"type": "text"
+						},
+						{
+							"key": "appointmenttime",
+							"value": "16:00",
+							"type": "text"
+						},
+						{
+							"key": "symptoms",
+							"value": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/makeappointments/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"makeappointments",
+						""
+					]
+				},
+				"description": "For the patient to book appointments"
+			},
+			"response": []
+		},
+		{
+			"name": "http://127.0.0.1:8000/PatientDeleteAppointment/:pid",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-CSRFToken",
+						"value": "oBjfdwF50nblpAXHDt9ef6oTCCtnA8bj0SGmvmpCyNzNe3Ci7eIkOnlBuxIysMAU",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://127.0.0.1:8000/PatientDeleteAppointment/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"PatientDeleteAppointment",
+						":pid"
+					],
+					"variable": [
+						{
+							"key": "pid",
+							"value": ""
+						}
+					]
+				},
+				"description": "For the patient to delete appointment"
+			},
+			"response": []
+		},
+		{
+			"name": "http://127.0.0.1:8000/viewappointments/",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-CSRFToken",
+						"value": "oBjfdwF50nblpAXHDt9ef6oTCCtnA8bj0SGmvmpCyNzNe3Ci7eIkOnlBuxIysMAU",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://127.0.0.1:8000/viewappointments/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"viewappointments",
+						""
+					]
+				},
+				"description": "View appointmetns by Patient, doctor or admin"
+			},
+			"response": []
+		},
+		{
+			"name": "http://127.0.0.1:8000/viewappointments/?prescription&",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-CSRFToken",
+						"value": "oBjfdwF50nblpAXHDt9ef6oTCCtnA8bj0SGmvmpCyNzNe3Ci7eIkOnlBuxIysMAU",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "idofappointment",
+							"value": "0",
+							"type": "text"
+						},
+						{
+							"key": "prescription",
+							"value": "Tablets",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/viewappointments/?prescription&",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"viewappointments",
+						""
+					],
+					"query": [
+						{
+							"key": "prescription",
+							"value": null
+						},
+						{
+							"key": "",
+							"value": null
+						}
+					]
+				},
+				"description": "Add Prescirption for the patient by the doctor"
+			},
+			"response": []
+		},
+		{
+			"name": "http://127.0.0.1:8000/viewappointments/",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-CSRFToken",
+						"value": "oBjfdwF50nblpAXHDt9ef6oTCCtnA8bj0SGmvmpCyNzNe3Ci7eIkOnlBuxIysMAU",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://127.0.0.1:8000/viewappointments/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"viewappointments",
+						""
+					]
+				},
+				"description": "View appointments by the doctor"
+			},
+			"response": []
+		},
+		{
+			"name": "http://127.0.0.1:8000/ViewDoctorsAdmin",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-CSRFToken",
+						"value": "oBjfdwF50nblpAXHDt9ef6oTCCtnA8bj0SGmvmpCyNzNe3Ci7eIkOnlBuxIysMAU",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://127.0.0.1:8000/ViewDoctorsAdmin",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"ViewDoctorsAdmin"
+					]
+				},
+				"description": "View all doctors by the admin"
+			},
+			"response": []
+		},
+		{
+			"name": "http://127.0.0.1:8000/adminDeleteDoctor/:pid/:email",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-CSRFToken",
+						"value": "oBjfdwF50nblpAXHDt9ef6oTCCtnA8bj0SGmvmpCyNzNe3Ci7eIkOnlBuxIysMAU",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://127.0.0.1:8000/adminDeleteDoctor/:pid/:email",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"adminDeleteDoctor",
+						":pid",
+						":email"
+					],
+					"variable": [
+						{
+							"key": "pid",
+							"value": ""
+						},
+						{
+							"key": "email",
+							"value": ""
+						}
+					]
+				},
+				"description": "Delete doctor by the admin"
+			},
+			"response": []
+		}
+	]
+}
