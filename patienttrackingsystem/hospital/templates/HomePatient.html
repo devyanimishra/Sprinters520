@@ -7,7 +7,7 @@
 </head>
 <link rel="stylesheet" type="text/css" href="{% static "css/doctor.css" %}"/>
 <body>
-{% include 'adminnav.html' %}
+{% include 'PatientandDoctorNav.html' %}
 <div id="wrapper">
     <h1 class="text-center titel">Hello, {{ user.first_name }} !</h1>
     <div class="card">
@@ -25,7 +25,6 @@
     </div>
 </div>
 
-{% include 'adminnav.html' %}
 <script src="{% static 'js/jquery.min.js' %}"></script>
 <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
 

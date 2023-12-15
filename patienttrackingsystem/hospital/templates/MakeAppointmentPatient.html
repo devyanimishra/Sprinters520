@@ -7,10 +7,10 @@
 </head>
 
 <body>
-{% include 'adminnav.html' %}
+{% include 'PatientandDoctorNav.html' %}
 <div id="wrapper">
     <div class="row register-form">
-        <div class="col-md-8 offset-md-2">
+        <div class="col-md-8 offset-md-3">
             <form class="custom-form" method="post">
                 {% csrf_token %}
                 <h1 style="margin-top: 0px;">Make Appointments</h1>
@@ -21,7 +21,7 @@
                     <div class="col-sm-6 input-column">
                         <select class="form-control" name="doctoremail">
                             {% for d in alldoctors %}
-                            <option value="{{d.email}}">{{d.username}}----->{{d.expertise}}</option>
+                            <option value="{{d.email}}">{{d.username}} : {{d.expertise}}</option>
                             {% endfor %}
                         </select>
                     </div>
@@ -66,7 +66,7 @@
 
 {% ifequal error "False" %}
 <script type="text/javascript">
-    alert('Appointment Booked Sucessfully..........')
+    alert('Appointment Booked Sucessfully')
     window.location = ('{% url 'makeappointments' %}')
 </script>
 {% endifequal%}

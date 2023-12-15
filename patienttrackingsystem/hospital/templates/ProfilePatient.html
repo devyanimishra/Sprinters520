@@ -5,22 +5,20 @@
     {% include 'common.html' %}
     {% load static %}
 </head>
-
 <body>
-    {% include 'adminnav.html' %}
+    {% include 'PatientandDoctorNav.html' %}
     <div id="wrapper">
-        <div class="page-content-wrapper">
-                <div class="register-form">
-                    <div class="col-md-8 offset-2">
-                        {% for d in doctor_detials %}
-                        <form class="custom-form" style="margin-top: 0px;">
+            <div class="row register-form">
+                    <div class="col-md-8 offset-4">
+                        {% for d in patient_details %}
+                        <form class="custom-form" style="margin-top: 60px; width: 500px;">
                             <h1>Your Profile</h1>
                             <div class="form-row form-group">
                                 <div class="col-sm-4 label-column">
                                     <label class="col-form-label" for="name-input-field">Name: </label>
                                 </div>
                                 <div class="col-sm-6 input-column">
-                                    <input class="form-control" type="text" readonly="" value="{{ d.username }}">
+                                    <input class="form-control" type="text" value="{{ d.username }}" readonly="">
                                 </div>
                             </div>
                             <div class="form-row form-group">
@@ -28,15 +26,15 @@
                                     <label class="col-form-label" for="email-input-field">Email: </label>
                                 </div>
                                 <div class="col-sm-6 input-column">
-                                    <input class="form-control" type="email" readonly="" value="{{ d.email }}">
+                                    <input class="form-control" type="email" value="{{ d.email }}" readonly="">
                                 </div>
                             </div>
                             <div class="form-row form-group">
                                 <div class="col-sm-4 label-column">
-                                    <label class="col-form-label" for="dropdown-input-field">Gender: </label>
+                                    <label class="col-form-label" for="dropdown-input-field">Gender</label>
                                 </div>
                                 <div class="col-sm-6 input-column">
-                                    <input type="text" class="form-control" readonly="" value="{{ d.gender }}">
+                                    <input class="form-control" type="text" value="{{ d.gender }}" readonly="">
                                 </div>
                             </div>
                             <div class="form-row form-group">
@@ -44,7 +42,7 @@
                                     <label class="col-form-label" for="name-input-field">Phone Number: </label>
                                 </div>
                                 <div class="col-sm-6 input-column">
-                                    <input class="form-control" type="tel" readonly="" value="{{ d.contact_number }}">
+                                    <input class="form-control" type="text" value="{{ d.contact_number }}" readonly="">
                                 </div>
                             </div>
                             <div class="form-row form-group">
@@ -68,15 +66,7 @@
                                     <label class="col-form-label" for="name-input-field">Blood Group: </label>
                                 </div>
                                 <div class="col-sm-6 input-column">
-                                    <input type="text" class="form-control" readonly="" value="{{ d.blood_group }}">
-                                </div>
-                            </div>
-                            <div class="form-row form-group">
-                                <div class="col-sm-4 label-column">
-                                    <label class="col-form-label" for="name-input-field">Specialization: </label>
-                                </div>
-                                <div class="col-sm-6 input-column">
-                                    <input type="text" class="form-control" readonly="" value="{{ d.expertise }}">
+                                    <input type="text" class="form-control" value="{{ d.blood_group }}" readonly="">
                                 </div>
                             </div>
                         </form>
@@ -84,10 +74,8 @@
                     </div>
                 </div>
             </div>
-        </div>
-    <script src="{% static 'js/jquery.min.js' %}"></script>
-    <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'js/jquery.min.js' %}"></script>
+<script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
 
 </body>
-
 </html>

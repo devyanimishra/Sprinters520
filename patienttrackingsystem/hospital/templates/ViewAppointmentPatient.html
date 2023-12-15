@@ -7,11 +7,11 @@
 </head>
 
 <body>
-{% include 'adminnav.html' %}
+{% include 'PatientandDoctorNav.html' %}
 <div id="wrapper">
     <h2 class="text-center">UPCOMING APPOINTMENTS</h2>
     <div class="text-center" role="tablist" id="accordion-1">
-        {% for i in upcomming_appointments %}
+        {% for i in upcoming_appointments %}
         <ul class = "collapsible popout text-center" data-collapsible = "accordion">
             <li class="card">
                 <div class = "card-header collapsible-header">

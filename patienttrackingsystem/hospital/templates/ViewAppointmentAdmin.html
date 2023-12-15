@@ -6,12 +6,12 @@
     {% load static %}
 </head>
 
-<body style="background-image: url(&quot;{% static 'img/star-sky.jpg' %}&quot;);">
-{% include 'adminnav1.html' %}
+<body>
+{% include 'AdminNav.html' %}
 <div id="wrapper">
-    <h2 class="text-center" style="color: white;">UPCOMING APPOINTMENTS</h2>
+    <h2 class="text-center" style="color: black;">UPCOMING APPOINTMENTS</h2>
     <div class="text-center" role="tablist" id="accordion-1">
-        {% for i in upcomming_appointments %}
+        {% for i in upcoming_appointments %}
         <ul class = "collapsible popout text-center" data-collapsible = "accordion">
             <li class="card">
                 <div class = "card-header collapsible-header">
@@ -45,7 +45,7 @@
         </ul>
         {% endfor %}
     </div>
-    <h2 class="text-center" style="color: white;">PREVIOUS APPIONTMENTS</h2>
+    <h2 class="text-center" style="color: black;">PREVIOUS APPOINTMENTS</h2>
     <div class="text-center" role="tablist" id="accordion-2">
         {% for j in previous_appointments %}
         <ul class = "collapsible popout text-center" data-collapsible = "accordion">

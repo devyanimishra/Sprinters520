@@ -7,7 +7,7 @@
 
 <link rel="stylesheet" type="text/css" href="{% static "css/doctor.css" %}"/>
 <body>
-{% include 'adminnav1.html' %}
+{% include 'AdminNav.html' %}
 <div id="wrapper">
 <div class="row">
     <div class="col-sm">
@@ -15,7 +15,7 @@
         <h3 align="center" class="titel">View Appointments</h3>
         <img src="https://www.shutterstock.com/image-vector/man-makes-appointment-online-doctor-600nw-1284005350.jpg" alt="Avatar" style="width:100%">
         <div class="container" align="center" >
-            <a href="{% url 'adminviewAppointment' %}">
+            <a href="{% url 'ViewAppointmentAdmin' %}">
                 <button class="btn-appt"> View Appointments
                 </button>
             </a>
@@ -27,11 +27,11 @@
         <h3 align="center" class="titel">Doctors</h3>
         <img src="https://static.vecteezy.com/system/resources/thumbnails/001/822/322/small_2x/cartoon-couple-doctors-waving-free-vector.jpg" alt="Avatar" style="width:100%; height: 374px">
         <div class="container" align="center" >
-            <a href="{% url 'adminaddDoctor' %}">
+            <a href="{% url 'AddDoctorAdmin' %}">
                 <button class="btn-appt"> Add Doctor
                 </button>
             </a>
-            <a href="{% url 'adminviewDoctor' %}">
+            <a href="{% url 'ViewDoctorsAdmin' %}">
                 <button class="btn-appt"> View Doctors
                 </button>
             </a>

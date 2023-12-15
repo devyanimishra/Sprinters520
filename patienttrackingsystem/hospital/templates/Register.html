@@ -2,7 +2,7 @@
 {% include 'navbar.html' %}
 {% block body %}
 {% load static %}
-<link rel="stylesheet" type="text/css" href="{% static "css/Pretty-Registration-Form.css" %}"/>
+<link rel="stylesheet" type="text/css" href="{% static "css/Registration.css" %}"/>
 <div class="register-form">
 <div class="row d-flex align-items-center justify-content-center h-100">
       <div >
@@ -108,14 +108,14 @@
 
 {% ifequal error "False" %}
 <script type="text/javascript">
-    alert('Patient saved Sucessfully')
+    alert('Patient Details Added Sucessfully')
     window.location = ('{% url 'loginpage' %}')
 </script>
 {% endifequal%}
 
 {% ifequal error "True" %}
 <script type="text/javascript">
-    alert("Email already exists or passwords don't match")
+    alert("Email already exists or Passwords don't match!")
 </script>
 {% endifequal%}
 {% endblock %}

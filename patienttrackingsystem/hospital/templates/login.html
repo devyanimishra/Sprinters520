@@ -3,8 +3,8 @@
 {% block body %}
 {% load static %}
 
-<link rel="stylesheet" type="text/css" href="{% static "css/Login-Form-Dark.css" %}"/>
-<div class="login-dark">
+<link rel="stylesheet" type="text/css" href="{% static "css/Login.css" %}"/>
+<div class="login">
     <div class="row d-flex align-items-center justify-content-center h-100">
       <div >
         <img src="https://biz4solutions.com/wp-content/uploads/healthcarehms-mbbanner.webp" class="img-fluid">
@@ -25,13 +25,12 @@
 
 {% ifequal error "False" %}
 <script type="text/javascript">
-    alert('Logged in successfully')
     window.location = ('{% url 'loginpage' %}')
 </script>
 {% endifequal %}
 {% ifequal error  "True" %}
 <script type="text/javascript">
-  alert("Invalid email or password")
+  alert("Invalid Credentials!")
   window.location = ('{% url 'loginpage' %}')
 </script>
 {% endifequal %}
