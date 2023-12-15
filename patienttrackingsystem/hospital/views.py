@@ -110,25 +110,23 @@ class UserView:
 			return render(request,'HomePatient.html')
 
 class PatientView(UserView):
-    def registerPatient(request):
-    '''
-            Patient can register on the portal
-            '''
-        user_details = {}
-        validation = {"error": ''}
-        if request.method == 'POST':
-            user_details['username'] = request.POST['name']
-            user_details['pwd'] = request.POST['password']
-            user_details['recheck_pwd'] = request.POST['repeatpassword']
-            user_details['contact_number'] = request.POST['phonenumber']
-            user_details['email'] = request.POST['email']
-            user_details['dob'] = request.POST['dateofbirth']
-            user_details['gender'] = request.POST['gender']
-            user_details['address'] = request.POST['address']
-            user_details['blood_group'] = request.POST['bloodgroup']
-            patient = ""
-            validation = user_validation(user_details=user_details)
-            try:
+	def registerPatient(request):
+		''' Patient can register on the portal'''
+		user_details = {}
+		validation = {"error": ''}
+		if request.method == 'POST':
+			user_details['username'] = request.POST['name']
+			user_details['pwd'] = request.POST['password']
+			user_details['recheck_pwd'] = request.POST['repeatpassword']
+			user_details['contact_number'] = request.POST['phonenumber']
+			user_details['email'] = request.POST['email']
+			user_details['dob'] = request.POST['dateofbirth']
+			user_details['gender'] = request.POST['gender']
+			user_details['address'] = request.POST['address']
+			user_details['blood_group'] = request.POST['bloodgroup']
+			patient = ""
+			validation = user_validation(user_details=user_details)
+			try:
 				#create new patient
 				if not validation["error"]:
 					Patient.objects.create(username=user_details['username'],password=user_details['pwd'],\
@@ -178,7 +176,7 @@ class PatientView(UserView):
 				return render(request,'MakeAppointmentPatient.html',doctor)
 
 	def deleteAppointment(request,pid):
-	 '''
+		'''
 			 Patient can delete the appointment scheduled
 			 '''
 		if not request.user.is_active:
