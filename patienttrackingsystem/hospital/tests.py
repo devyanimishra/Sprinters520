@@ -113,4 +113,98 @@ class Tests(TestCase):
         client.login(username='admin', password='adminpassword')
         response = client.get('/ViewAppointmentAdmin/')
         self.assertEqual(response.status_code, 200)
- 
+
+    def test_non_admin_view_appointments_redirect(self):
+        client = Client()
+        client.login(username='user1', password='pwd1')
+        response = client.get('/ViewAppointmentAdmin/')
+        self.assertRedirects(response, '/loginadmin/', status_code=302, target_status_code=200)
+
+    def test_login_user_doctor(self):
+        client = Client()
+        response = client.post(reverse(AdminView.loginAdmin), {'username': 'user2', 'password': 'pwd2'})
+        self.assertEqual(response.status_code, 200)
+
+    def test_register_existing_user(self):
+        client = Client()
+        post_data = {
+            'name': 'Test Patient',
+            'password': 'testpassword',
+            'repeatpassword': 'testpassword',
+            'phonenumber': '1234567890',
+            'email': 'testpatient@example.com',
+            'dateofbirth': '1990-01-01',
+            'gender': 'Male',
+            'address': 'Test Address',
+            'bloodgroup': 'O+',
+        }
+        #PatientView.add_new_user(post_data)
+        response = client.post('/Register/', data= post_data)
+        self.assertEqual(response.status_code, 200)
+        
+    def test_admin_home_landing_page(self):
+        client = Client()
+        client.login(username='admin', password='adminpassword')
+        response = client.get('/HomeAdmin/')
+        self.assertTemplateUsed(response,'HomeAdmin.html')
+
+    def test_admin_get_doctor(self):
+        client = Client()
+        client.login(username = 'admin',password ='adminpassword')
+        response = client.get('/ViewDoctorsAdmin/')
+        self.assertTemplateUsed(response,'ViewDoctorsAdmin.html')
+
+    def test_non_admin_get_doctor(self):
+        client = Client()
+        client.login(username='user1', password='pwd1')
+        response = client.get('/ViewDoctorsAdmin/')
+        self.assertRedirects(response, '/loginadmin/', status_code=302, target_status_code=200)
+
+    def test_admin_add_doctor(self):
+        client = Client()
+        client.login(username = 'admin',password ='adminpassword')
+        post_data = {
+            'name': 'Test Doctor',
+            'password': 'testpassword',
+            'repeatpasssword': 'testpassword',
+            'email': 'testdoctor@example.com',
+            'gender': 'Male',
+            'phonenumber': '1234567890',
+            'address': 'Test Address',
+            'dateofbirth': '1990-01-01',
+            'bloodgroup': 'O+',
+            'specialization': 'Cardiology',
+        }
+        response = client.post('/AddDoctorAdmin/', data=post_data)
+        self.assertEqual(response.status_code, 200)
+      
+    def test_patient_logout(self):
+        client = Client()
+        client.login(username="user1",password = "pwd1")
+        response = client.get('/logout/')
+        self.assertEquals(response.status_code,302)
+
+    def test_patient_get_appointment_patient(self):
+        client = Client()
+        client.login(username='user2', password='pwd2')
+        response = client.get('/viewappointments/')
+        self.assertTemplateUsed(response,'ViewAppointmentDoctor.html')
+
+
+
+    def test_login_user(self):
+        client = Client()
+        post_data = {
+            'email': 'random@gmail.com',
+            'password': 'random',
+        }
+        
+        response = client.post('/Login/', data=post_data)
+        self.assertIn(response.status_code, [200, 302])
+
+    def test_patient_profile(self):
+        client = Client()
+        client.login(username = "user1",password="pwd1")
+        response = client.get('/profile/')
+        self.assertEqual(response.status_code,200)
+        self.assertTemplateUsed(response,'ProfilePatient.html')
